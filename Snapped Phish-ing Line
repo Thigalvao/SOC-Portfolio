@@ -1,0 +1,34 @@
+# TryHackMe - Snapped Phish-ing Line (Write-Up)
+
+Este repositório contém a documentação e análise da sala **"Snapped Phish-ing Line"** do TryHackMe. O objetivo do desafio foi realizar uma análise forense e resposta a incidentes (DFIR) em um servidor que hospedava uma página de phishing ativa simulando o Office 365.
+
+## 🛡️ Habilidades Demonstradas
+* Análise Forense Web (DFIR)
+* Engenharia Reversa básica em scripts PHP
+* Análise de logs de servidores comprometidos
+* Criptografia e decodificação de strings ocultas (Base64/Reverse) com CyberChef
+
+## 🕵️‍♂️ Passo a Passo da Investigação
+
+### 1. Descoberta do Diretório Exposto
+Ao analisar o servidor alvo (`kennaroads.buzz`), identifiquei uma falha de configuração de listagem de diretório (Directory Listing) na pasta `/data`. Lá, o atacante deixou exposto o arquivo compactado contendo o código-fonte do kit de phishing.
+
+### 2. Análise do Kit de Phishing (submit.php)
+Após extrair o artefato e inspecionar o código do arquivo `submit.php`, localizei a função responsável por desviar as credenciais digitadas pelas vítimas. O invasor configurou o seguinte e-mail para receber os dados exfiltrados:
+* **E-mail do atacante:** `m3npat@yandex.com`
+
+### 3. Análise de Logs (`log.txt`)
+O servidor mantinha um arquivo chamado `log.txt` que registrava os acessos e as credenciais roubadas. Através dele, foi possível identificar:
+* IPs de origem das vítimas (ex: Filipinas e Estados Unidos).
+* Credenciais interceptadas antes da interrupção da campanha.
+
+### 4. Decodificação da Flag Oculta
+Localizei um arquivo oculto chamado `flag.txt` que continha uma string obfuscada em Base64 invertido. Utilizando a ferramenta **CyberChef**, apliquei as operações `Reverse` e `From Base64` para extrair o segredo:
+* **Flag:** `THM{pL4y_w1Th_tH3_URL}`
+
+## 📁 Arquivos neste repositório
+* `README.md` (Este relatório de análise)
+* *(Opcional)* Prints de tela das etapas cruciais (como a tela de conclusão do TryHackMe).
+
+---
+*Nota: Por motivos de segurança e conformidade com as diretrizes do GitHub, os arquivos executáveis e scripts originais do kit de phishing não foram incluídos neste repositório.*
